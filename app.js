@@ -1,3 +1,5 @@
+const lineWidth = document.getElementById('line-width')
+
 const canvas = document.querySelector('canvas');
 
 //캔버스에 그림을 그릴때 쓰는 것이다. 
@@ -16,7 +18,7 @@ const colors = [
     "#32ff7e",
     "#7efff5",
 ]
-ctx.lineWidth = 2;
+ctx.lineWidth = lineWidth.value;
 let isPainting = false;
 
 function onMove(event){
@@ -25,6 +27,7 @@ function onMove(event){
         ctx.stroke();
         return;
     }
+    ctx.beginPath()
     ctx.moveTo(event.offsetX+3, event.offsetY+3);
 }
 function onMouseDown(event){
@@ -35,7 +38,13 @@ function onMouseUp(){
     isPainting = false;
 }
 
+function onLineWidthChange(event){
+    ctx.lineWidth = event.target.value
+}
+
 canvas.addEventListener('mousemove', onMove)
 canvas.addEventListener('mousedown', onMouseDown)
 canvas.addEventListener('mouseup', onMouseUp)
 canvas.addEventListener('mouseleave', onMouseUp)
+
+lineWidth.addEventListener('change', onLineWidthChange)

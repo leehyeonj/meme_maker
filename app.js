@@ -1,5 +1,7 @@
-const lineWidth = document.getElementById('line-width')
+const colorOptions = Array.from(document.getElementsByClassName('color-option'))
 
+const lineWidth = document.getElementById('line-width')
+const color = document.getElementById('color')
 const canvas = document.querySelector('canvas');
 
 //캔버스에 그림을 그릴때 쓰는 것이다. 
@@ -42,9 +44,26 @@ function onLineWidthChange(event){
     ctx.lineWidth = event.target.value
 }
 
+function onColorChange(event){
+    ctx.strokeStyle = event.target.value;
+    ctx.fillStyle = event.target.value;
+}
+
+//console.dir
+function onColorClick(event){
+const colorValue = event.target.dataset.color
+  ctx.strokeStyle =colorValue
+  ctx.fillStyle = colorValue
+  color.value = colorValue
+}
+
 canvas.addEventListener('mousemove', onMove)
 canvas.addEventListener('mousedown', onMouseDown)
 canvas.addEventListener('mouseup', onMouseUp)
 canvas.addEventListener('mouseleave', onMouseUp)
 
 lineWidth.addEventListener('change', onLineWidthChange)
+color.addEventListener('change', onColorChange)
+
+
+colorOptions.forEach(color => color.addEventListener('click', onColorClick))

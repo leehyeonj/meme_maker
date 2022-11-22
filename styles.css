@@ -6,7 +6,7 @@ canvas {
 }
 
 body {
-    
+    margin: 0;
     justify-content: center;
     align-items: center;
 }

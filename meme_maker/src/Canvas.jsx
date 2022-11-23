@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import Color from "./components/Color";
 import "./canvas.css";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { colorState } from "./recoil/color";
+import ColorSet from "./components/ColorSet";
 
 const Canvas = () => {
   const canvasRef = useRef(null);
@@ -7,6 +11,7 @@ const Canvas = () => {
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
+  const brushColor = useRecoilValue(colorState);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -36,6 +41,7 @@ const Canvas = () => {
         ctx.beginPath();
         ctx.moveTo(offsetX, offsetY);
       } else {
+        ctx.strokeStyle = brushColor;
         ctx.lineTo(offsetX, offsetY);
         ctx.stroke();
       }
@@ -44,6 +50,7 @@ const Canvas = () => {
 
   return (
     <div className="body">
+      <ColorSet />
       <canvas
         className="canvas"
         ref={canvasRef}

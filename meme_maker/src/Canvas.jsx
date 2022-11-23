@@ -48,9 +48,21 @@ const Canvas = () => {
     }
   };
 
+  const onLineWidthChange = (event) => {
+    ctx.lineWidth = event.target.value;
+  };
+
   return (
     <div className="body">
       <ColorSet />
+      <input
+        id="line-width"
+        type="range"
+        min="1"
+        max="10"
+        step="0.1"
+        onChange={onLineWidthChange}
+      />
       <canvas
         className="canvas"
         ref={canvasRef}

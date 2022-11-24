@@ -104,6 +104,20 @@ const Canvas = () => {
     };
   };
 
+  const onSaveImage = () => {
+    const cv = document.querySelector(".canvas");
+    try {
+      const url = cv.toDataURL();
+
+      let a = document.createElement("a");
+      a.href = url;
+      a.download = "myDrawing.png";
+      a.click();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="body">
       <ColorSet />
@@ -122,7 +136,8 @@ const Canvas = () => {
         ref={textRef}
         placeholder="텍스트를 입력하고 화면을 더블클릭하세요"
       ></input>
-      <input type="file" onChange={onFileChange}></input>
+      <input type="file" onChange={onFileChange} accept="image/*"></input>
+      <button onClick={onSaveImage}>사진 저장하기</button>
       <canvas
         className="canvas"
         ref={canvasRef}

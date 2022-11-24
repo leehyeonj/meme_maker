@@ -94,6 +94,16 @@ const Canvas = () => {
     }
   };
 
+  const onFileChange = (e) => {
+    const file = e.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    };
+  };
+
   return (
     <div className="body">
       <ColorSet />
@@ -112,6 +122,7 @@ const Canvas = () => {
         ref={textRef}
         placeholder="텍스트를 입력하고 화면을 더블클릭하세요"
       ></input>
+      <input type="file" onChange={onFileChange}></input>
       <canvas
         className="canvas"
         ref={canvasRef}

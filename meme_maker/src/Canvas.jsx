@@ -14,6 +14,7 @@ const Canvas = () => {
   const [isFilling, setIsFilling] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
   const [brushColor, setBrushColor] = useRecoilState(colorState);
+  const textRef = useRef();
 
   const CANVAS_WIDTH = 800;
   const CANVAS_HEIGHT = 800;
@@ -79,6 +80,20 @@ const Canvas = () => {
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   };
 
+  const onCanvasDoubleClick = (event) => {
+    if (textRef.current.value) {
+      ctx.save();
+      ctx.lineWidth = 1;
+      ctx.font = "48px serif";
+      ctx.fillText(
+        textRef.current.value,
+        event.nativeEvent.offsetX,
+        event.nativeEvent.offsetY
+      );
+      ctx.restore();
+    }
+  };
+
   return (
     <div className="body">
       <ColorSet />
@@ -93,6 +108,10 @@ const Canvas = () => {
       <button onClick={onClickFillBtn}>{isFilling ? "stroke" : "fill"}</button>
       <button onClick={onEraserClick}>지우개</button>
       <button onClick={onResetCanvas}>reset</button>
+      <input
+        ref={textRef}
+        placeholder="텍스트를 입력하고 화면을 더블클릭하세요"
+      ></input>
       <canvas
         className="canvas"
         ref={canvasRef}
@@ -101,6 +120,7 @@ const Canvas = () => {
         onMouseMove={drawing}
         onMouseLeave={finishDrawing}
         onClick={onCanvasClick}
+        onDoubleClick={onCanvasDoubleClick}
       ></canvas>
     </div>
   );

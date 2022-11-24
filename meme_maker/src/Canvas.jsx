@@ -11,7 +11,12 @@ const Canvas = () => {
 
   const [ctx, setCtx] = useState();
   const [isDrawing, setIsDrawing] = useState(false);
-  const brushColor = useRecoilValue(colorState);
+  const [isFilling, setIsFilling] = useState(false);
+  const [isErasing, setIsErasing] = useState(false);
+  const [brushColor, setBrushColor] = useRecoilState(colorState);
+
+  const CANVAS_WIDTH = 800;
+  const CANVAS_HEIGHT = 800;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -19,7 +24,7 @@ const Canvas = () => {
     canvas.height = 800;
 
     const context = canvas.getContext("2d");
-    context.strokeStyle = "black";
+
     context.lineWidth = 2.5;
     contextRef.current = context;
     setCtx(contextRef.current);
@@ -41,7 +46,7 @@ const Canvas = () => {
         ctx.beginPath();
         ctx.moveTo(offsetX, offsetY);
       } else {
-        ctx.strokeStyle = brushColor;
+        ctx.strokeStyle = isErasing ? "#ffffff" : brushColor;
         ctx.lineTo(offsetX, offsetY);
         ctx.stroke();
       }
@@ -50,6 +55,28 @@ const Canvas = () => {
 
   const onLineWidthChange = (event) => {
     ctx.lineWidth = event.target.value;
+  };
+
+  const onClickFillBtn = () => {
+    setIsFilling(!isFilling);
+    setIsErasing(false);
+  };
+
+  const onCanvasClick = () => {
+    ctx.fillStyle = brushColor;
+    //채우기 했을 때 지우개
+    if (isFilling && !isErasing) {
+      ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+  };
+
+  const onEraserClick = () => {
+    setIsErasing(true);
+  };
+
+  const onResetCanvas = () => {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   };
 
   return (
@@ -63,6 +90,9 @@ const Canvas = () => {
         step="0.1"
         onChange={onLineWidthChange}
       />
+      <button onClick={onClickFillBtn}>{isFilling ? "stroke" : "fill"}</button>
+      <button onClick={onEraserClick}>지우개</button>
+      <button onClick={onResetCanvas}>reset</button>
       <canvas
         className="canvas"
         ref={canvasRef}
@@ -70,6 +100,7 @@ const Canvas = () => {
         onMouseUp={finishDrawing}
         onMouseMove={drawing}
         onMouseLeave={finishDrawing}
+        onClick={onCanvasClick}
       ></canvas>
     </div>
   );

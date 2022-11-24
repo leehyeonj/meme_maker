@@ -16,5 +16,5 @@ export const colorSet = [
 
 export const colorState = atom({
   key: "colorState",
-  default: "black",
+  default: "#000000",
 });

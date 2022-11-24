@@ -77,6 +77,7 @@ const Canvas = () => {
       const rgb = RGBToHex(data[0], data[1], data[2]);
 
       setBrushColor(rgb);
+      setIsColorPicker(false);
     }
 
     ctx.fillStyle = brushColor;

@@ -1,5 +1,6 @@
 #root{
     background-color: gainsboro;
+    
 }
 .body {
     width: 100%;
@@ -10,4 +11,5 @@
 }
 .canvas {
     background-color:  white;
+    cursor: none;
 }

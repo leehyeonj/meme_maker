@@ -1,12 +1,11 @@
 import "./App.css";
-import Canvas from "./Canvas";
+import Canvas from "./components/Canvas";
 import { RecoilRoot } from "recoil";
-import MouseCursor from "./MouseCursor";
+import MouseCursor from "./components/MouseCursor";
 
 function App() {
   return (
     <RecoilRoot>
-      <MouseCursor />
       <Canvas />
     </RecoilRoot>
   );

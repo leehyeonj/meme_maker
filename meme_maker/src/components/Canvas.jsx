@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Color from "./components/Color";
+import Color from "./Color";
 import "./canvas.css";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { colorState } from "./recoil/color";
-import ColorSet from "./components/ColorSet";
-import { RGBToHex } from "./RGBToHex";
+import { colorState } from "../recoil/color";
+import ColorSet from "./ColorSet";
+import { RGBToHex } from "../RGBToHex";
+import MouseCursor from "./MouseCursor";
 
 const Canvas = () => {
   const canvasRef = useRef(null);
@@ -140,6 +141,7 @@ const Canvas = () => {
 
   return (
     <div className="body">
+      <MouseCursor />
       <ColorSet />
       <input
         id="line-width"

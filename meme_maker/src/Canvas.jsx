@@ -4,6 +4,7 @@ import "./canvas.css";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { colorState } from "./recoil/color";
 import ColorSet from "./components/ColorSet";
+import { RGBToHex } from "./RGBToHex";
 
 const Canvas = () => {
   const canvasRef = useRef(null);
@@ -13,6 +14,7 @@ const Canvas = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isFilling, setIsFilling] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
+  const [isColorpicker, setIsColorPicker] = useState(false);
   const [brushColor, setBrushColor] = useRecoilState(colorState);
   const textRef = useRef();
 
@@ -63,7 +65,20 @@ const Canvas = () => {
     setIsErasing(false);
   };
 
-  const onCanvasClick = () => {
+  const onCanvasClick = (e) => {
+    if (isColorpicker) {
+      const cv = document.querySelector(".canvas");
+      const bounding = cv.getBoundingClientRect();
+      const x = e.clientX - bounding.left;
+      const y = e.clientY - bounding.top;
+      const pixel = ctx.getImageData(x, y, 1, 1);
+      const data = pixel.data;
+
+      const rgb = RGBToHex(data[0], data[1], data[2]);
+
+      setBrushColor(rgb);
+    }
+
     ctx.fillStyle = brushColor;
     //채우기 했을 때 지우개
     if (isFilling && !isErasing) {
@@ -118,6 +133,10 @@ const Canvas = () => {
     }
   };
 
+  const onClickColorPicker = () => {
+    setIsColorPicker(true);
+  };
+
   return (
     <div className="body">
       <ColorSet />
@@ -138,6 +157,7 @@ const Canvas = () => {
       ></input>
       <input type="file" onChange={onFileChange} accept="image/*"></input>
       <button onClick={onSaveImage}>사진 저장하기</button>
+      <button onClick={onClickColorPicker}>스포이드</button>
       <canvas
         className="canvas"
         ref={canvasRef}
